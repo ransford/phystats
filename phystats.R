@@ -45,12 +45,21 @@ p1 <- ggplot(df2, aes(x=time_seconds, y=Value, colour=Counter)) +
         legend.justification=c(1,0)) +
   xlab("Time (s)") + ggtitle(csvfile)
 
+# plot fraction of frames that are bad
+dffrac <- data.frame(df$time_seconds)
+colnames(dffrac)[1] <- "time_seconds"
+dffrac$fraction_bad <- 100.0 * df$dot11FCSErrorCount / df$received_fragment_count
+p2 <- ggplot(dffrac, aes(x=time_seconds, y=fraction_bad)) +
+  geom_point(colour="red") +
+  xlab("Time (s)") +
+  ylab("dot11FCSErrorCount / received_fragment_count (%)") + ggtitle(csvfile)
+
 df3 <- melt(df, id=c("time_seconds"),
             variable.name="Counter", value.name="Value",
             measure.vars=c("dot11FCSErrorCount_vs_line",
                            "received_fragment_count_vs_line"))
 
-p2 <- ggplot(df3, aes(x=time_seconds, y=Value, colour=Counter)) +
+p3 <- ggplot(df3, aes(x=time_seconds, y=Value, colour=Counter)) +
   geom_point() +
   stat_smooth() +
   geom_hline(y=0, linetype=2) +
@@ -59,4 +68,5 @@ p2 <- ggplot(df3, aes(x=time_seconds, y=Value, colour=Counter)) +
   xlab("Time (s)") + ggtitle(csvfile)
 
 ggsave(p1, file=pdffile, width=8, height=5)
-ggsave(p2, file=paste("vs_linear_", pdffile, sep=''), width=8, height=5)
+ggsave(p2, file=paste("fraction_bad_", pdffile, sep=''), width=8, height=5)
+ggsave(p3, file=paste("vs_linear_", pdffile, sep=''), width=8, height=5)
