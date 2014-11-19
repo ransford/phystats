@@ -3,9 +3,9 @@
 library(ggplot2)
 library(reshape2)
 
-args <- commandArgs(TRUE)
+args    <- commandArgs(TRUE)
 csvfile <- args[[1]]
-pdffile <- args[[2]]
+pfx     <- args[[2]]
 
 base_rates <- function(df) {
   ncols <- length(df)
@@ -67,6 +67,6 @@ p3 <- ggplot(df3, aes(x=time_seconds, y=Value, colour=Counter)) +
         legend.justification=c(1,0)) +
   xlab("Time (s)") + ggtitle(csvfile)
 
-ggsave(p1, file=pdffile, width=8, height=5)
-ggsave(p2, file=paste("fraction_bad_", pdffile, sep=''), width=8, height=5)
-ggsave(p3, file=paste("vs_linear_", pdffile, sep=''), width=8, height=5)
+ggsave(p1, file=paste(pfx, "_raw.pdf", sep=""),          width=8, height=5)
+ggsave(p2, file=paste(pfx, "_fraction_bad.pdf", sep=""), width=8, height=5)
+ggsave(p3, file=paste(pfx, "_vs_linear.pdf", sep=""),    width=8, height=5)

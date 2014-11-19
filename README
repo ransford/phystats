@@ -10,4 +10,4 @@ time_seconds,dot11FCSErrorCount,received_fragment_count
 1416377673.65,25006689,51341360
 1416377673.75,25006722,51341372
 
-$ make CSV=out.csv phystats.pdf
+$ ./phystats.R out.csv plot_out
